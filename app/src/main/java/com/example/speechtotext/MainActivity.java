@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView speech;
     Button speak;
+    String complete_text=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "bn_IN");
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hi Speak Something");
 
         try {
@@ -61,7 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK && data!=null){
                     ArrayList<String> result =
                             data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    speech.setText(result.get(0));
+                    if(complete_text==null) {
+                        complete_text = result.get(0);
+                    }
+                    else{
+                        complete_text=complete_text+" "+result.get(0);
+                    }
+
+                    speech.setText(complete_text);
                 }
                 break;
         }
